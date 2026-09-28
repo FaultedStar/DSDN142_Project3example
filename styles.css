@@ -1,0 +1,592 @@
+/* =============================================================
+   STYLES.CSS  —  the look of your whole website
+   =============================================================
+
+   START HERE ↓
+   The block below is your "design tokens": the colours, fonts and
+   spacing used everywhere. Change a value here and it updates across
+   the ENTIRE site. This is the easiest and best place to make the
+   site feel like YOURS.
+
+   TIP: Ask Claude things like
+     "Change the accent colour to a warm orange."
+     "Use a serif font for headings."
+     "Make everything feel more spacious."
+   ============================================================= */
+
+:root {
+  /* ---- COLOURS (light mode) ---- */
+  --color-bg:      #b8d3ff;   /* page background */
+  --color-surface: #d9d9d9;   /* cards, panels (the grey boxes from your wireframe) */
+  --color-text:    #1a1a1a;   /* main text */
+  --color-muted:   #57606a;   /* secondary text (kept dark enough to stay readable) */
+  --color-border:  #e5e7eb;   /* thin lines */
+  --color-accent:  #1a1a1a;   /* links & buttons — CHANGE ME to make it yours */
+  --color-accent-text: #b8d3ff; /* text on top of the accent colour */
+
+  /* ---- FONTS ---- */
+  /* These are "system fonts" — they use whatever the computer has, so
+     there is nothing to download. Swap them for a Google Font if you
+     like (ask Claude how). */
+  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: var(--font-body);
+
+  /* ---- SPACING & SIZES ---- */
+  --space:        1rem;       /* the base spacing unit */
+  --radius:       10px;       /* how round corners are */
+  --max-width:    1080px;     /* how wide content gets on big screens */
+}
+
+/* ---- COLOURS (dark mode) ----
+   When the toggle is on, script.js puts data-theme="dark" on the page,
+   and these values take over. Same tokens, darker values. */
+[data-theme="dark"] {
+  --color-bg:      #1a1a1a;
+  --color-surface: #3a3a3a;
+  --color-text:    #f4f4f5;
+  --color-muted:   #b0b0b0;
+  --color-border:  #444444;
+  --color-accent:  #f4f4f5;
+  --color-accent-text: #1a1a1a;
+}
+
+/* -------------------------------------------------------------
+   BASIC RESET — sensible defaults. You can usually leave this.
+   ------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* smooth scrolling to #about, #work, etc. */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+  /* a gentle fade when switching between light and dark mode */
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+img {
+  display: block;
+  max-width: 100%; /* stops images overflowing on small screens */
+  height: auto;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+/* -------------------------------------------------------------
+   ACCESSIBILITY  (small things that make the site usable for
+   everyone — including people using a keyboard or a screen reader)
+   ------------------------------------------------------------- */
+
+/* A clear outline shows keyboard users where they are on the page.
+   :focus-visible only shows it for keyboard focus, not mouse clicks. */
+a:focus-visible,
+button:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* The "Skip to content" link. It's tucked off-screen until a keyboard
+   user tabs to it, then it appears at the top-left. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem; /* off-screen */
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  z-index: 100;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0.5rem; /* slides into view when focused */
+}
+
+/* The .container keeps content centred and stops it getting too wide. */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space);
+}
+
+/* -------------------------------------------------------------
+   HEADER / NAVIGATION
+   ------------------------------------------------------------- */
+.site-header {
+  position: sticky;   /* the nav stays at the top as you scroll */
+  top: 0;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 10;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.75rem;
+}
+
+.nav__logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.nav__links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav__links a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.nav__links a:hover {
+  color: var(--color-accent);
+}
+
+/* The hamburger button is hidden on big screens... */
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.nav__toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--color-text);
+}
+
+/* -------------------------------------------------------------
+   HERO (the big intro at the top of the home page)
+   ------------------------------------------------------------- */
+.hero {
+  padding-block: 4rem 3rem;
+}
+
+.hero__eyebrow {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4rem); /* grows with screen size */
+  line-height: 1.1;
+}
+
+.hero__subtitle {
+  color: var(--color-muted);
+  font-size: 1.2rem;
+  max-width: 40ch;
+  margin-block: 1rem 1.5rem;
+}
+
+/* -------------------------------------------------------------
+   BUTTONS
+   ------------------------------------------------------------- */
+.button {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------------------
+   SECTIONS (About, Work, ...)
+   ------------------------------------------------------------- */
+.section {
+  padding-block: 3rem;
+}
+
+.section__title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.section__intro {
+  color: var(--color-muted);
+  max-width: 55ch;
+  margin-bottom: 2rem;
+}
+
+/* -------------------------------------------------------------
+   ABOUT
+   ------------------------------------------------------------- */
+.about {
+  display: grid;
+  grid-template-columns: 220px 1fr; /* photo | text */
+  gap: 2rem;
+  align-items: start;
+}
+
+.about__photo {
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.about__text p + p {
+  margin-top: 1rem;
+}
+
+/* -------------------------------------------------------------
+   WORK GRID + PROJECT CARDS
+   ------------------------------------------------------------- */
+.grid {
+  display: grid;
+  /* auto-fit means the number of columns adapts to the screen width.
+     Cards are at least 260px wide, and fill the row. */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card__image {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* keeps all cards the same shape */
+  object-fit: cover;
+}
+
+.card__body {
+  padding: 1rem;
+}
+
+.card__title {
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem;
+}
+
+.card__meta {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* -------------------------------------------------------------
+   PROJECT PAGE
+   ------------------------------------------------------------- */
+.project__back {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--color-muted);
+  margin-bottom: 1.5rem;
+}
+
+.project__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+
+.project__meta {
+  color: var(--color-muted);
+  margin-block: 0.5rem 2rem;
+}
+
+.project__description {
+  max-width: 65ch;
+  font-size: 1.1rem;
+}
+
+.project__description p + p {
+  margin-top: 1rem;
+}
+
+.project__gallery {
+  margin-top: 2.5rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.project__gallery img {
+  width: 100%;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+/* -------------------------------------------------------------
+   FOOTER
+   ------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: 2rem;
+  margin-top: 3rem;
+  color: var(--color-muted);
+}
+
+/* -------------------------------------------------------------
+   TOP BAR  (toggle · name · about circle)
+   Built to match your Figma wireframe.
+   ------------------------------------------------------------- */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* left | centre | right */
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1.5rem;
+}
+
+/* Your name, big and centred. */
+.brand {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  line-height: 1;
+  text-align: center;
+}
+
+/* The light / dark toggle, top-left. */
+.theme-toggle {
+  justify-self: start;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 2rem 1rem;
+  min-width: 110px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  transition: opacity 0.15s ease;
+}
+
+.theme-toggle:hover {
+  opacity: 0.85;
+}
+
+/* The round "about me" button, top-right. */
+.about-circle {
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.about-circle:hover {
+  transform: scale(1.04);
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------------------
+   FEATURED PROJECT  (the big one in the middle)
+   ------------------------------------------------------------- */
+.featured {
+  display: flex;
+  justify-content: center;
+  padding-block: 2rem 3rem;
+}
+
+.feature-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-surface);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.feature-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The "project" caption sitting on the card. */
+.feature-card__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+}
+
+/* -------------------------------------------------------------
+   LINK BUTTON ROW  (four along the bottom)
+   ------------------------------------------------------------- */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding-block: 2rem 3rem;
+}
+
+.link-button {
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  transition: opacity 0.15s ease;
+}
+
+.link-button:hover {
+  opacity: 0.85;
+}
+
+/* -------------------------------------------------------------
+   ABOUT SECTION  (below the fold, where the circle jumps to)
+   ------------------------------------------------------------- */
+.about-section {
+  padding-block: 3rem;
+  scroll-margin-top: 1.5rem; /* stops the heading hiding under the top edge */
+}
+
+.about-section__title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* =============================================================
+   RESPONSIVE / MOBILE STYLES
+   =============================================================
+   Everything above is the "desktop" look. The block below only
+   applies on screens NARROWER than 700px (phones and small
+   tablets). This is how the site adapts — it's the "Responsive"
+   part of the brief.
+
+   Try it: make your browser window very narrow and watch the
+   menu turn into a hamburger button.
+   ============================================================= */
+@media (max-width: 700px) {
+
+  /* Show the hamburger button... */
+  .nav__toggle {
+    display: flex;
+  }
+
+  /* ...and hide the links until the button is tapped.
+     script.js adds the class "nav__links--open" to show them. */
+  .nav__links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__links--open {
+    display: flex;
+  }
+
+  .nav__links a {
+    padding: 1rem var(--space);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Stack the top bar into one centred column on phones. */
+  .topbar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 1.25rem;
+  }
+
+  .theme-toggle,
+  .about-circle {
+    justify-self: center;
+  }
+
+  .about-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* Stack the about photo above the text instead of beside it. */
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .about__photo {
+    width: 160px;
+  }
+}
+
+/* =============================================================
+   REDUCED MOTION  (accessibility)
+   =============================================================
+   Some people feel dizzy or unwell from moving/animated interfaces,
+   so they turn on "Reduce Motion" in their computer settings. When
+   they have, we switch off the smooth scrolling and the little
+   hover animations. Good practice on every site.
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
